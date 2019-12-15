@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0.130'
-        classpath 'pokechu22.test.begradle:begradle:0.2.2:fg3'
+        classpath 'pokechu22.test.begradle:begradle:0.2.3-SNAPSHOT:fg3'
     }
 }
 
@@ -47,7 +47,7 @@ sourceSets {
 
 minecraft {
     //suppressMappingVersionWarnings = true
-    mappings channel: 'snapshot', version: '20190726-1.14.3'
+    mappings channel: 'snapshot', version: '20190923-1.14.3'
     runs {
         client {
             workingDirectory project.file('run')
@@ -161,6 +161,7 @@ sourceSets {
 tasks.withType(JavaCompile) { javaTask ->
     javaTask.sourceCompatibility = "1.8"
     javaTask.targetCompatibility = "1.8"
+    javaTask.dependsOn("processBasePatches")
 }
 
 sourceCompatibility = "1.8"
@@ -175,4 +176,11 @@ targetCompatibility = "1.8"
 jar {
     from sourceSets.api.output
     classifier = 'mc1.14.1'
+}
+
+// Unit tests require native libraries to be available, which ForgeGradle
+// doesn't do automatically...
+test {
+    dependsOn extractNatives
+    systemProperty 'java.library.path', file('build/natives')
 }
