@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2018 Pokechu22, julialy
+ * Copyright (c) 2018-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -25,6 +24,7 @@ import wdl.config.BooleanSetting;
 import wdl.config.EnumSetting;
 import wdl.config.IConfiguration;
 import wdl.config.IntSetting;
+import wdl.versioned.VersionedFunctions;
 
 /**
  * Contains various settings and enums for world settings.
@@ -111,15 +111,15 @@ public final class WorldSettings {
 		PLAYER("player") {
 			@Override
 			public int getX(Entity player, IConfiguration config) {
-				return MathHelper.floor(player.posX);
+				return MathHelper.floor(VersionedFunctions.getEntityX(player));
 			}
 			@Override
 			public int getY(Entity player, IConfiguration config) {
-				return MathHelper.floor(player.posY);
+				return MathHelper.floor(VersionedFunctions.getEntityY(player));
 			}
 			@Override
 			public int getZ(Entity player, IConfiguration config) {
-				return MathHelper.floor(player.posZ);
+				return MathHelper.floor(VersionedFunctions.getEntityZ(player));
 			}
 		},
 		XYZ("xyz") {

@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -27,6 +26,7 @@ import wdl.gui.widget.GuiNumericTextField;
 import wdl.gui.widget.SettingButton;
 import wdl.gui.widget.WDLButton;
 import wdl.gui.widget.WDLScreen;
+import wdl.versioned.VersionedFunctions;
 
 public class GuiWDLPlayer extends WDLScreen {
 	@Nullable
@@ -167,8 +167,8 @@ public class GuiWDLPlayer extends WDLScreen {
 	}
 
 	private void setPlayerPosToPlayerPosition() {
-		this.posX.setValue((int)wdl.player.posX);
-		this.posY.setValue((int)wdl.player.posY);
-		this.posZ.setValue((int)wdl.player.posZ);
+		this.posX.setValue((int)VersionedFunctions.getEntityX(wdl.player));
+		this.posY.setValue((int)VersionedFunctions.getEntityY(wdl.player));
+		this.posZ.setValue((int)VersionedFunctions.getEntityZ(wdl.player));
 	}
 }

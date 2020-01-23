@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2018 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -91,13 +90,14 @@ public class MapDataHandlerTest extends MaybeMixinTest {
 			for (byte scale = 0; scale <= 4; scale++) {
 				PlayerEntity owner = new RemoteClientPlayerEntity(TestWorld.makeClient(), mock(GameProfile.class));
 				owner.inventory.setInventorySlotContents(10, SOME_MAP_ITEM);
-				owner.posX = pos[0];
-				owner.posZ = pos[1];
+				double posX = pos[0];
+				double posZ = pos[1];
+				VersionedFunctions.setEntityPos(owner, posX, 0, posZ);
 				MapData map = new MapData("test");
 				map.scale = scale;
 				map.trackingPosition = true;
 				VersionedFunctions.setMapDimension(map, DimensionType.OVERWORLD);
-				map.calculateMapCenter(owner.posX, owner.posZ, map.scale);
+				map.calculateMapCenter(posX, posZ, map.scale);
 				map.updateVisiblePlayers(owner, SOME_MAP_ITEM);
 
 				MapData client = copyMapData(map);
@@ -122,13 +122,15 @@ public class MapDataHandlerTest extends MaybeMixinTest {
 
 			PlayerEntity owner = new RemoteClientPlayerEntity(TestWorld.makeClient(), mock(GameProfile.class));
 			owner.inventory.setInventorySlotContents(10, SOME_MAP_ITEM);
-			owner.posX = 900;
-			owner.posZ = 0;
+			double posX = 900;
+			double posZ = 0;
+			VersionedFunctions.setEntityPos(owner, posX, 0, posZ);
 			map.scale = scale;
 			VersionedFunctions.setMapDimension(map, DimensionType.OVERWORLD);
-			map.calculateMapCenter(owner.posX, owner.posZ, map.scale);
+			map.calculateMapCenter(posX, posZ, map.scale);
 
-			owner.posX += 68 * (1 << scale); // i.e. a bit off the top
+			posX += 68 * (1 << scale); // i.e. a bit off the top
+			VersionedFunctions.setEntityPos(owner, posX, 0, posZ);
 			map.updateVisiblePlayers(owner, SOME_MAP_ITEM);
 
 			assertEquals("Should be no player markers", 0, map.mapDecorations.values().stream()
@@ -142,7 +144,8 @@ public class MapDataHandlerTest extends MaybeMixinTest {
 			MapDataResult result = MapDataHandler.repairMapData(0, client, owner);
 			assertFalse(result.hasCenter);
 
-			owner.posX += 360 * (1 << scale); // i.e. VERY far away
+			posX += 360 * (1 << scale); // i.e. VERY far away
+			VersionedFunctions.setEntityPos(owner, posX, 0, posZ);
 			map.updateVisiblePlayers(owner, SOME_MAP_ITEM);
 
 			assertEquals("Should be no player markers", 0, map.mapDecorations.values().stream()

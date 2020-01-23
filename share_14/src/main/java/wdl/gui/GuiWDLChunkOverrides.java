@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -17,7 +16,7 @@ package wdl.gui;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.platform.GlStateManager;
+//import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
@@ -258,8 +257,8 @@ public class GuiWDLChunkOverrides extends WDLScreen {
 		}
 
 		// Player position.
-		int playerPosX = (int)(((wdl.player.posX / 16.0D) - scrollX) * SCALE + (width / 2));
-		int playerPosZ = (int)(((wdl.player.posZ / 16.0D) - scrollZ) * SCALE + (height / 2));
+		int playerPosX = (int)(((VersionedFunctions.getEntityX(wdl.player) / 16.0D) - scrollX) * SCALE + (width / 2));
+		int playerPosZ = (int)(((VersionedFunctions.getEntityZ(wdl.player) / 16.0D) - scrollZ) * SCALE + (height / 2));
 
 		hLine(playerPosX - 3, playerPosX + 3, playerPosZ, 0xFFFFFFFF);
 		// Vertical is 1px taller because it seems to be needed to make it proportional
@@ -400,7 +399,7 @@ public class GuiWDLChunkOverrides extends WDLScreen {
 		@Override
 		public void afterDraw() {
 			// Reset the color, which gets set somewhere (probably when drawing text)
-			GlStateManager.color3f(1.0f, 1.0f, 1.0f);
+			//GlStateManager.color3f(1.0f, 1.0f, 1.0f); XXX broken until 1.15 names work
 			minecraft.getTextureManager().bindTexture(WIDGET_TEXTURES);
 
 			this.blit(this.x + 2, this.y + 2,

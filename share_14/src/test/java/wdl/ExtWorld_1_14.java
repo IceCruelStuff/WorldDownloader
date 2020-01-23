@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2018 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -223,7 +222,7 @@ abstract class ExtWorldServer extends ServerWorld {
 	public void interactBlock(BlockPos pos, PlayerEntity player) {
 		BlockState state = this.getBlockState(pos);
 		BlockRayTraceResult rayTraceResult = new BlockRayTraceResult(new Vec3d(pos), Direction.DOWN, pos, false);
-		state.onBlockActivated(this, player, Hand.MAIN_HAND, rayTraceResult);
+		state.func_215687_a(this, player, Hand.MAIN_HAND, rayTraceResult);
 	}
 
 	/** Right-clicks an entity. */
@@ -297,5 +296,10 @@ abstract class ExtWorldServer extends ServerWorld {
 		public ChunkGenerator<?> getChunkGenerator() {
 			return null; // This is allowed, albeit awkward; see ChunkProviderClient
 		}
+	}
+
+	public void setPlayerSneaking(PlayerEntity player, boolean sneaking) {
+		// Exists only due to name issues
+		player.func_70095_a(sneaking);
 	}
 }

@@ -1,7 +1,7 @@
 # World Downloader translation file
 # All of the text on the left side of the = is the key, while the right side is the value.
 # '%s' and similar are formatting tokens, as described on the formatter
-# docs: http://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html
+# docs: https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html
 # Only '%s' and '%%' are allowed.  '%s' is a string, and '%%' is an escapped percent.
 # You can reference an argument at a specific index with %i$s, where 'i'
 # is the number.
@@ -11,7 +11,7 @@
 # This cannot be escaped.
 #
 # Additionally, Minecraft's §-based color codes may be used.  See
-# http://minecraft.gamepedia.com/Formatting_codes for more info.
+# https://minecraft.gamepedia.com/Formatting_codes for more info.
 
 # Translator name, preferably in the form of 'Translated to %s by <your name>'.
 # '%s' will be replaced with the language name automatically.
@@ -262,7 +262,7 @@ wdl.gui.gamerules.title=World Downloader mod: Game rules
 wdl.gui.gamerules.resetRule=Reset
 wdl.gui.gamerules.doneInfo=Note: Rules are only saved once the world has been downloaded and saved, and will be lost if you disconnect without saving.
 
-# Descriptions of individual rules, using their (case-sensitive) name.  Based off of the wiki article: https://minecraft.gamepedia.com/Commands#gamerule
+# Descriptions of individual rules, using their (case-sensitive) name.  Based off of the wiki article: https://minecraft.gamepedia.com/Commands/gamerule
 wdl.gui.gamerules.rules.announceAdvancements=Should advancements should be announced?
 wdl.gui.gamerules.rules.commandBlockOutput=Should command blocks notify admins when performing commands?
 wdl.gui.gamerules.rules.disableElytraMovementCheck=Should the elytra movement anticheat check be skipped?  Has no effect in singleplayer (always skipped)
@@ -286,6 +286,13 @@ wdl.gui.gamerules.rules.sendCommandFeedback=Should players get feedback on comma
 wdl.gui.gamerules.rules.showDeathMessages=Should death messages appear in chat?  (Both from players and their pets)
 wdl.gui.gamerules.rules.spawnRadius=How far from the central spawn (in blocks) should players be spread when spawning?
 wdl.gui.gamerules.rules.spectatorsGenerateChunks=Should players in spectator mode generate new chunks?
+wdl.gui.gamerules.rules.disableRaids=Should raids on villages be disabled?
+wdl.gui.gamerules.rules.doInsomnia=Should phantoms spawn near players who haven't slept?
+wdl.gui.gamerules.rules.drowningDamage=Should players take damage when drowning?
+wdl.gui.gamerules.rules.fallDamage=Should players take fall damage?
+wdl.gui.gamerules.rules.fireDamage=Should players take damage from fire?
+wdl.gui.gamerules.rules.doPatrolSpawning=Should patrols of pillagers randomly spawn?
+wdl.gui.gamerules.rules.doTraderSpawning=Should the wandering trader randomly spawn?
 # This is a special case, since it doesn't seem to actually be on the list:
 wdl.gui.gamerules.rules.gameLoopFunction=The name of the function to call each tick.  (Deprecated, will be removed in 1.13 and functions are not saved by the mod so this is not useful)
 
@@ -293,6 +300,7 @@ wdl.gui.savedChunks.title=Saved Chunks
 wdl.gui.savedChunks.savedNow=Chunk at %s, %s: saved now
 wdl.gui.savedChunks.lastSaved=Chunk at %s, %s: last saved at %tc
 wdl.gui.savedChunks.neverSaved=Chunk at %s, %s: never saved
+wdl.gui.savedChunks.savedAfterDownload=Chunk at %s, %s: last saved at %tc AFTER the world was downloaded (e.g. generated in singleplayer)
 
 wdl.backup.none=No backup
 wdl.backup.folder=Copy world folder

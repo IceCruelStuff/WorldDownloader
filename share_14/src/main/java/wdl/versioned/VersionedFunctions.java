@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2017-2018 Pokechu22, julialy
+ * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -39,10 +38,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.play.client.CCustomPayloadPacket;
 import net.minecraft.network.play.server.SCustomPayloadPlayPacket;
 import net.minecraft.network.play.server.SMapDataPacket;
@@ -152,6 +154,48 @@ public final class VersionedFunctions {
 	public static final Int2ObjectMap<BiMap<String, Integer>> VANILLA_VILLAGER_CAREERS = HandlerFunctions.VANILLA_VILLAGER_CAREERS;
 
 	/**
+	 * Gets an entity's x coordinate.
+	 *
+	 * @param e The entity
+	 * @return {@link Entity#posX}
+	 */
+	public static double getEntityX(Entity e) {
+		return HandlerFunctions.getEntityX(e);
+	}
+
+	/**
+	 * Gets an entity's y coordinate.
+	 *
+	 * @param e The entity
+	 * @return {@link Entity#posY}
+	 */
+	public static double getEntityY(Entity e) {
+		return HandlerFunctions.getEntityY(e);
+	}
+
+	/**
+	 * Gets an entity's z coordinate.
+	 *
+	 * @param e The entity
+	 * @return {@link Entity#posZ}
+	 */
+	public static double getEntityZ(Entity e) {
+		return HandlerFunctions.getEntityZ(e);
+	}
+
+	/**
+	 * Sets an entity's position directly.
+	 *
+	 * @param e The entity
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param z The z coordinate
+	 */
+	public static void setEntityPos(Entity e, double x, double y, double z) {
+		HandlerFunctions.setEntityPos(e, x, y, z);
+	}
+
+	/**
 	 * Returns a well-formated String version of the tag, suitable for tests and logging.
 	 * This will usually be multiple lines long.
 	 *
@@ -159,7 +203,47 @@ public final class VersionedFunctions {
 	 * @return The string version.
 	 */
 	public static String nbtString(INBT tag) {
-		return HandlerFunctions.nbtString(tag);
+		return NBTFunctions.nbtString(tag);
+	}
+
+	/**
+	 * Creates an NBT list based on the given float values.
+	 *
+	 * @param values The varargs array of values.
+	 * @return A new list tag.
+	 */
+	public static ListNBT createFloatListTag(float... values) {
+		return NBTFunctions.createFloatListTag(values);
+	}
+
+	/**
+	 * Creates an NBT list based on the given double values.
+	 *
+	 * @param values The varargs array of values.
+	 * @return A new list tag.
+	 */
+	public static ListNBT createDoubleListTag(double... values) {
+		return NBTFunctions.createDoubleListTag(values);
+	}
+
+	/**
+	 * Creates an NBT list based on the given short values.
+	 *
+	 * @param values The varargs array of values.
+	 * @return A new list tag.
+	 */
+	public static ListNBT createShortListTag(short... values) {
+		return NBTFunctions.createShortListTag(values);
+	}
+
+	/**
+	 * Creates an NBT string based on the given string.
+	 *
+	 * @param value The string to use.
+	 * @return A new string tag.
+	 */
+	public static StringNBT createStringTag(String value) {
+		return NBTFunctions.createStringTag(value);
 	}
 
 	/**

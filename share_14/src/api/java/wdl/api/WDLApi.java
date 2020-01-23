@@ -1,12 +1,12 @@
 /*
  * This file is part of the World Downloader API.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
- * Copyright (c) 2017 Pokechu22, julialy
+ * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * You are free to include the World Downloader API within your own mods, as
  * permitted via the MMPLv2.
@@ -104,11 +104,11 @@ public class WDLApi {
 	}
 
 	/**
-	 * Sets the instance.
+	 * Sets the instance.  Intended for internal use only.
 	 *
 	 * Does not check if there is an existing instance.
 	 */
-	static void setInstance(APIInstance instance) {
+	public static void setInstance(APIInstance instance) {
 		LOGGER.debug("Changing api instance from {} to {}", INSTANCE, instance);
 		INSTANCE = instance;
 	}
@@ -130,7 +130,7 @@ public class WDLApi {
 		public final String version;
 		public final T mod;
 
-		ModInfo(String id, String version, T mod) {
+		protected ModInfo(String id, String version, T mod) {
 			this.id = id;
 			this.version = version;
 			this.mod = mod;
@@ -208,7 +208,7 @@ public class WDLApi {
 			info.append("Main class: ").append(mod.getClass().getName()).append('\n');
 			info.append("Containing file: ");
 			try {
-				//http://stackoverflow.com/q/320542/3991344
+				//https://stackoverflow.com/q/320542/3991344
 				String path = new File(mod.getClass().getProtectionDomain()
 						.getCodeSource().getLocation().toURI()).getPath();
 
@@ -278,7 +278,7 @@ public class WDLApi {
 	/**
 	 * Delegates API logic.
 	 */
-	static interface APIInstance {
+	public static interface APIInstance {
 		/** @see {@link WDLApi#saveTileEntity(BlockPos, TileEntity)} */
 		abstract void saveTileEntity(BlockPos pos, TileEntity te);
 		/** @see {@link WDLApi#addWDLMod(String, String, IWDLMod)} */
@@ -296,24 +296,5 @@ public class WDLApi {
 		abstract boolean isEnabled(String modID);
 		/** @see {@link ModInfo#setEnabled(boolean)} */
 		abstract void setEnabled(String modID, boolean enabled);
-	}
-
-	// Can't directly access non-API code from API sourceset, and we don't have
-	// a direct mediator to call e.g. an event (unlike with forge mods)
-	// So indirectly initialize it through reflection
-	// NOTE: The class must call setInstance during static initialization!
-	private static final String IMPL = "wdl.api.APIImpl";
-	static {
-		try {
-			Class.forName(IMPL);
-		} catch (ClassNotFoundException e) {
-			LOGGER.error("Failed to load API implementation class ({})!  Things will probably break!", IMPL, e);
-		}
-		try {
-			checkState();
-		} catch (IllegalStateException e) {
-			// Did it not call setInstance in a static block?
-			LOGGER.error("After loading the API implementation class ({}), state is still not valid!  Things will probably break!", IMPL, e);
-		}
 	}
 }

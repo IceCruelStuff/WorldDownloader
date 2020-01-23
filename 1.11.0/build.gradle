@@ -20,7 +20,7 @@ buildscript {
 
 apply plugin: 'java'
 
-version = "4.0.5.4-SNAPSHOT"
+version = "4.0.6.1-SNAPSHOT"
 group = "wdl"
 archivesBaseName = "WorldDownloader"
 libsDirName = "../../libs/${version}"
@@ -41,7 +41,7 @@ dependencies {
 minecraft {
     suppressMappingVersionWarnings = true
     version = "1.11"
-    mappings = "snapshot_20190923"
+    mappings = "snapshot_20200122"
     runDir = "run"
 
     // We don't currently want a source jar (doesn't work well for base edits, and the version info doesn't work yet)
@@ -59,6 +59,7 @@ extraSrgs {
     addSrg file('../srgs/1.13.srg')
     addMethods file('../srgs/gamerule_methods_pre_1.14.3.csv')
     addMethods file('../srgs/pre_1.14_methods.csv')
+    addMethods file('../srgs/pre_1.15_methods.csv')
     addMethods file('../srgs/1.12_methods.csv')
     addMethods file('../srgs/1.11_gui_methods.csv')
     addFields file('../srgs/pre_1.14_fields.csv')
@@ -86,6 +87,7 @@ sourceSets {
             exclude "wdl/versioned/Handlers_1_13.java"
             exclude "wdl/versioned/Maps_1_13.java"
             exclude "wdl/versioned/Maps_1_13_1.java"
+            exclude "wdl/versioned/NBT_1_13.java"
             exclude "wdl/versioned/Packets_1_13.java"
             exclude "wdl/versioned/Registries_1_13_1.java"
             exclude "wdl/versioned/Types_1_9_2.java"

@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2018-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -24,7 +23,6 @@ import it.unimi.dsi.fastutil.shorts.ShortList;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.LongArrayNBT;
-import net.minecraft.nbt.ShortNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.world.LightType;
@@ -40,6 +38,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.chunk.NibbleArray;
 import net.minecraft.world.chunk.UpgradeData;
 import net.minecraft.world.chunk.storage.ChunkLoader;
+import net.minecraft.world.chunk.storage.RegionFile;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.EndDimension;
 import net.minecraft.world.dimension.NetherDimension;
@@ -184,7 +183,7 @@ abstract class WDLChunkLoaderBase extends ChunkLoader {
 			compound.putBoolean("isLightOn", true);
 		}
 
-		Biome[] biomes = chunk.getBiomes();
+		Biome[] biomes = chunk.func_201590_e(); // getBiomes
 		int[] biomeData = biomes != null ? new int[biomes.length] : new int[0];
 		if (biomes != null) {
 			for (int j = 0; j < biomes.length; ++j) {
@@ -232,7 +231,7 @@ abstract class WDLChunkLoaderBase extends ChunkLoader {
 
 		CompoundNBT heightMaps = new CompoundNBT();
 
-		for (Entry<Heightmap.Type, Heightmap> entry : chunk.func_217311_f()) {
+		for (Entry<Heightmap.Type, Heightmap> entry : chunk.getHeightmaps()) {
 			if (chunk.getStatus().getHeightMaps().contains(entry.getKey())) {
 				heightMaps.put(entry.getKey().getId(), new LongArrayNBT(entry.getValue().getDataArray()));
 			}
@@ -241,7 +240,7 @@ abstract class WDLChunkLoaderBase extends ChunkLoader {
 		compound.put("Heightmaps", heightMaps);
 		// TODO
 		//compound.put("Structures",
-		//		func_222649_a(chunkpos, chunk.getStructureStarts(), chunk.getStructureReferences()));
+		//		writeStructures(chunkpos, chunk.getStructureStarts(), chunk.getStructureReferences()));
 
 		return compound;
 	}
@@ -263,17 +262,23 @@ abstract class WDLChunkLoaderBase extends ChunkLoader {
 		ListNBT listnbt = new ListNBT();
 
 		for (ShortList shortlist : list) {
-			ListNBT sublist = new ListNBT();
-
+			ListNBT sublist;
 			if (shortlist != null) {
-				for (Short val : shortlist) {
-					sublist.add(new ShortNBT(val));
-				}
+				sublist = VersionedFunctions.createShortListTag(shortlist.toShortArray());
+			} else {
+				sublist = VersionedFunctions.createShortListTag();
 			}
 
 			listnbt.add(sublist);
 		}
 
 		return listnbt;
+	}
+
+	/**
+	 * Provided since the constructor changes between versions.
+	 */
+	protected RegionFile createRegionFile(File file) throws IOException {
+		return new RegionFile(file);
 	}
 }

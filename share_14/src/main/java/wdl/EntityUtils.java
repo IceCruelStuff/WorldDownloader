@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2017-2018 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -37,6 +36,7 @@ import wdl.api.WDLApi;
 import wdl.api.WDLApi.ModInfo;
 import wdl.config.settings.EntitySettings;
 import wdl.config.settings.EntitySettings.TrackDistanceMode;
+import wdl.versioned.VersionedFunctions;
 
 /**
  * Provides utility functions for recognizing entities.
@@ -316,8 +316,8 @@ public class EntityUtils {
 		int threshold = Math.min(trackDistance, maxRange);
 
 		// Entity track distance is a square, see TrackedEntity.isVisibleTo
-		double dx = Math.abs(entity.posX - player.posX);
-		double dz = Math.abs(entity.posZ - player.posZ);
+		double dx = Math.abs(VersionedFunctions.getEntityX(entity) - VersionedFunctions.getEntityX(player));
+		double dz = Math.abs(VersionedFunctions.getEntityZ(entity) - VersionedFunctions.getEntityZ(player));
 
 		double distance = Math.max(dx, dz);
 

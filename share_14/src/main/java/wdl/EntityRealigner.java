@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2017 Pokechu22, julialy
+ * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -18,11 +17,12 @@ import net.minecraft.entity.Entity;
 import wdl.api.IEntityEditor;
 import wdl.api.IWDLMod;
 import wdl.api.IWDLModDescripted;
+import wdl.versioned.VersionedFunctions;
 
 /**
  * Realigns entities to their serverside positions, to mitigate entity drift.
  * This is necessary for entities that move clientside, most importantly boats
- * (example: http://i.imgur.com/3QQchZL.gifv).
+ * (example: https://i.imgur.com/3QQchZL.gifv).
  * <br/>
  * This is also an example of how an {@link IWDLMod} would be implemented.
  */
@@ -79,9 +79,10 @@ public class EntityRealigner implements IEntityEditor, IWDLModDescripted {
 
 	@Override
 	public void editEntity(Entity e) {
-		e.posX = convertServerPos(e.serverPosX);
-		e.posY = convertServerPos(e.serverPosY);
-		e.posZ = convertServerPos(e.serverPosZ);
+		double posX = convertServerPos(e.serverPosX);
+		double posY = convertServerPos(e.serverPosY);
+		double posZ = convertServerPos(e.serverPosZ);
+		VersionedFunctions.setEntityPos(e, posX, posY, posZ);
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class EntityRealigner implements IEntityEditor, IWDLModDescripted {
 	 * (or {@link Entity#serverPosX} and the like use) into a double.
 	 *
 	 * @see
-	 *      <a href="http://wiki.vg/Protocol#Fixed-point_numbers">
+	 *      <a href="https://wiki.vg/Protocol#Fixed-point_numbers">
 	 *      wiki.vg on Fixed-point numbers</a>
 	 *
 	 * @param serverPos

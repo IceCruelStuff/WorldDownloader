@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2017-2019 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -61,8 +60,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.realms.RealmsScreen;
@@ -81,6 +78,7 @@ import net.minecraft.world.storage.SessionLockException;
 import net.minecraft.world.storage.ThreadedFileIOBase;
 import net.minecraft.world.storage.WorldInfo;
 import wdl.WorldBackup.WorldBackupType;
+import wdl.api.APIImpl;
 import wdl.api.IPlayerInfoEditor;
 import wdl.api.ISaveListener;
 import wdl.api.IWorldInfoEditor;
@@ -112,7 +110,7 @@ public class WDL {
 	 *
 	 * Note that WDL is licensed under the MMPLv2, which requires modified
 	 * versions to be open source if they are released (plus requires permission
-	 * for that - <a href="http://www.minecraftforum.net/private-messages/send?recipient=Pokechu22">
+	 * for that - <a href="https://www.minecraftforum.net/private-messages/send?recipient=Pokechu22">
 	 * send Pokechu22 a message on the Minecraft Forums to get it</a>).
 	 *
 	 * @see GithubInfoGrabber
@@ -288,6 +286,10 @@ public class WDL {
 		serverProps = new Configuration(globalProps);
 		INSTANCE.worldProps = serverProps;
 		INSTANCE.gameRules = new GameRules();
+
+		// Now that all configuration is loaded, it should be safe to access this
+		// (and it shouldn't have issues with depending back on this class)
+		APIImpl.ensureInitialized();
 	}
 
 	/**
@@ -1133,22 +1135,14 @@ public class WDL {
 			int x = worldProps.getValue(PlayerSettings.PLAYER_X);
 			int y = worldProps.getValue(PlayerSettings.PLAYER_Y);
 			int z = worldProps.getValue(PlayerSettings.PLAYER_Z);
-			//Positions are offset to center of block,
-			//or player height.
-			NBTTagList pos = new NBTTagList();
-			pos.add(new NBTTagDouble(x + 0.5D));
-			pos.add(new NBTTagDouble(y + 0.621D));
-			pos.add(new NBTTagDouble(z + 0.5D));
+			// Positions are offset to center of block,
+			// or player height.
+			NBTTagList pos = VersionedFunctions.createDoubleListTag(x + 0.5D, y + 0.621D, z + 0.5D);
 			playerNBT.put("Pos", pos);
-			NBTTagList motion = new NBTTagList();
-			motion.add(new NBTTagDouble(0.0D));
-			//Force them to land on the ground?
-			motion.add(new NBTTagDouble(-0.0001D));
-			motion.add(new NBTTagDouble(0.0D));
+			// Force them to land on the ground?
+			NBTTagList motion = VersionedFunctions.createDoubleListTag(0.0D, -0.0001D, 0.0D);
 			playerNBT.put("Motion", motion);
-			NBTTagList rotation = new NBTTagList();
-			rotation.add(new NBTTagFloat(0.0f));
-			rotation.add(new NBTTagFloat(0.0f));
+			NBTTagList rotation = VersionedFunctions.createFloatListTag(0.0f, 0.0f);
 			playerNBT.put("Rotation", rotation);
 		}
 
@@ -1624,7 +1618,7 @@ public class WDL {
 		core.addDetail("Protocol version", VersionConstants.getProtocolVersion());
 		core.addDetail("Data version", VersionConstants.getDataVersion());
 		core.addDetail("File location", () -> {
-			//http://stackoverflow.com/q/320542/3991344
+			//https://stackoverflow.com/q/320542/3991344
 			String path = new File(WDL.class.getProtectionDomain()
 					.getCodeSource().getLocation().toURI()).getPath();
 

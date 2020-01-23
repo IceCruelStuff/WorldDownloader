@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2017-2018 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -323,8 +322,8 @@ public final class MapDataHandler {
 				// Maps are always snapped to a grid based on the player position when it's created
 				// If the player is on the map, there's only one possible center position
 				hasCenter = true;
-				xCenter = worldCoordToMapCenter(confirmedOwner.posX, map.scale);
-				zCenter = worldCoordToMapCenter(confirmedOwner.posZ, map.scale);
+				xCenter = worldCoordToMapCenter(VersionedFunctions.getEntityX(confirmedOwner), map.scale);
+				zCenter = worldCoordToMapCenter(VersionedFunctions.getEntityZ(confirmedOwner), map.scale);
 
 				map.xCenter = xCenter;
 				map.zCenter = zCenter;

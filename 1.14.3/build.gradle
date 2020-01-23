@@ -13,14 +13,14 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0.130'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0.154'
         classpath 'pokechu22.test.begradle:begradle:0.2.3-SNAPSHOT:fg3'
     }
 }
 
 apply plugin: 'java'
 
-version = "4.0.5.4-SNAPSHOT"
+version = "4.0.6.1-SNAPSHOT"
 group = "wdl"
 archivesBaseName = "WorldDownloader"
 libsDirName = "../../libs/${version}"
@@ -47,7 +47,7 @@ sourceSets {
 
 minecraft {
     //suppressMappingVersionWarnings = true
-    mappings channel: 'snapshot', version: '20190923-1.14.3'
+    mappings channel: 'snapshot', version: '20200122-1.15.1'
     runs {
         client {
             workingDirectory project.file('run')
@@ -119,7 +119,11 @@ sourceSets {
             runtimeClasspath += api.output
             srcDir "src/main/java"
             srcDir project(':share_14').file("src/main/java")
+            exclude "wdl/WDLChunkLoader_1_15.java"
             exclude "wdl/versioned/GameRules_1_14.java"
+            exclude "wdl/versioned/Gui_1_15.java"
+            exclude "wdl/versioned/Handlers_1_15.java"
+            exclude "wdl/versioned/NBT_1_15.java"
         }
         resources {
             srcDir project(':share').file("src/main/resources")
@@ -146,6 +150,7 @@ sourceSets {
             exclude "wdl/DelegateChunkManager_1_14.java"
             exclude "wdl/DelegateChunkManager_1_14_4.java"
             exclude "wdl/ExtWorld_1_14_4.java"
+            exclude "wdl/ExtWorld_1_15.java"
             exclude "wdl/lwts/WDLTestTweaker_1_9.java"
             exclude "wdl/lwts/WDLTestTweaker_1_10.java"
             exclude "wdl/lwts/WDLTestTweaker.java"

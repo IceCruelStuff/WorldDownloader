@@ -1,14 +1,13 @@
 /*
- * This file is part of World Downloader: A mod to make backups of your
- * multiplayer worlds.
- * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2520465
+ * This file is part of World Downloader: A mod to make backups of your multiplayer worlds.
+ * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
  * Copyright (c) 2018 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
- * For information about this the MMPLv2, see http://stopmodreposts.org/
+ * For information about this the MMPLv2, see https://stopmodreposts.org/
  *
  * Do not redistribute (in modified or unmodified form) without prior permission.
  */
@@ -127,9 +126,10 @@ public abstract class AbstractEntityHandlerTest<E extends Entity, C extends Cont
 			// Create the client copy
 			Entity clientEntity = serverEntity.getClass().getConstructor(EntityType.class, World.class).newInstance(type, (World)clientWorld);
 			// Copy the standard entity data
-			clientEntity.posX = serverEntity.posX;
-			clientEntity.posY = serverEntity.posY;
-			clientEntity.posZ = serverEntity.posZ;
+			double posX = VersionedFunctions.getEntityX(serverEntity);
+			double posY = VersionedFunctions.getEntityY(serverEntity);
+			double posZ = VersionedFunctions.getEntityZ(serverEntity);
+			VersionedFunctions.setEntityPos(clientEntity, posX, posY, posZ);
 			clientEntity.rotationPitch = serverEntity.rotationPitch;
 			clientEntity.rotationYaw = serverEntity.rotationYaw;
 			if (clientEntity instanceof LivingEntity) {
@@ -160,7 +160,7 @@ public abstract class AbstractEntityHandlerTest<E extends Entity, C extends Cont
 		assertThat("Entity is not known to the server!", serverWorld.getEntityByID(eid), is(serverEntity));
 		assertThat("Entity is not known to the client!", clientWorld.getEntityByID(eid), is(notNullValue()));
 
-		serverPlayer.setSneaking(true);
+		serverWorld.setPlayerSneaking(serverPlayer, true);
 		serverPlayer.closeScreen();
 		assertSame("Should have reset server open container", serverPlayer.openContainer, serverPlayer.container);
 		assertSame("Should have reset client open container", clientPlayer.openContainer, clientPlayer.container);
