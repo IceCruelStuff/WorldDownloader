@@ -3,7 +3,7 @@
  * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2017-2018 Pokechu22, julialy
+ * Copyright (c) 2017-2020 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
@@ -90,7 +90,7 @@ public class WDLHooks {
 	static final boolean ENABLE_PROFILER = false;
 	private static final IProfiler PROFILER = ENABLE_PROFILER ? Minecraft.getInstance().getProfiler() : null;
 
-	private final WDL wdl = WDL.INSTANCE;
+	private final WDL wdl = WDL.getInstance();
 
 	/**
 	 * Called when {@link ClientWorld#tick()} is called.
@@ -498,7 +498,7 @@ public class WDLHooks {
 		public void beforeDraw() {
 			final String displayString;
 			final boolean enabled;
-			if (WDL.minecraft.isIntegratedServerRunning()) {
+			if (wdl.minecraft.isIntegratedServerRunning()) {
 				// Singleplayer
 				displayString = I18n
 						.format("wdl.gui.ingameMenu.downloadStatus.singlePlayer");
@@ -535,7 +535,7 @@ public class WDLHooks {
 
 		@Override
 		public void performAction() {
-			if (WDL.minecraft.isIntegratedServerRunning()) {
+			if (wdl.minecraft.isIntegratedServerRunning()) {
 				return; // WDL not available if in singleplayer or LAN server mode
 			}
 
@@ -547,7 +547,7 @@ public class WDLHooks {
 					// If they don't have any permissions, let the player
 					// request some.
 					if (WDLPluginChannels.canRequestPermissions()) {
-						WDL.minecraft.displayGuiScreen(new GuiWDLPermissions(menu, wdl));
+						wdl.minecraft.displayGuiScreen(new GuiWDLPermissions(menu, wdl));
 					} else {
 						// Should never happen
 					}
@@ -555,7 +555,7 @@ public class WDLHooks {
 						&& !WDLPluginChannels.canDownloadInGeneral()) {
 					// Handle the "only has chunk overrides" state - notify
 					// the player of limited areas.
-					WDL.minecraft.displayGuiScreen(new GuiWDLChunkOverrides(menu, wdl));
+					wdl.minecraft.displayGuiScreen(new GuiWDLChunkOverrides(menu, wdl));
 				} else {
 					wdl.startDownload();
 					setEnabled(false); // Disable to stop double-clicks
@@ -575,13 +575,13 @@ public class WDLHooks {
 
 		@Override
 		public void performAction() {
-			if (WDL.minecraft.isIntegratedServerRunning()) {
-				WDL.minecraft.displayGuiScreen(new GuiWDLAbout(menu, wdl));
+			if (wdl.minecraft.isIntegratedServerRunning()) {
+				wdl.minecraft.displayGuiScreen(new GuiWDLAbout(menu, wdl));
 			} else {
-				if (wdl.promptForInfoForSettings("changeOptions", false, this::performAction, () -> WDL.minecraft.displayGuiScreen(null))) {
+				if (wdl.promptForInfoForSettings("changeOptions", false, this::performAction, () -> wdl.minecraft.displayGuiScreen(null))) {
 					return;
 				}
-				WDL.minecraft.displayGuiScreen(new GuiWDL(menu, wdl));
+				wdl.minecraft.displayGuiScreen(new GuiWDL(menu, wdl));
 			}
 		}
 	}

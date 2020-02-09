@@ -3,7 +3,7 @@
  * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2017-2018 Pokechu22, julialy
+ * Copyright (c) 2017-2020 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
@@ -67,7 +67,7 @@ public class WDLEvents {
 	private static final IProfiler PROFILER = ENABLE_PROFILER ? Minecraft.getInstance().getProfiler() : null;
 
 	// XXX this shoudln't be static
-	private static WDL wdl = WDL.INSTANCE;
+	private static WDL wdl = WDL.getInstance();
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -78,7 +78,7 @@ public class WDLEvents {
 	public static void onWorldLoad(ClientWorld world) {
 		if (ENABLE_PROFILER) PROFILER.startSection("Core");
 
-		if (WDL.minecraft.isIntegratedServerRunning()) {
+		if (wdl.minecraft.isIntegratedServerRunning()) {
 			// Don't do anything else in single player
 
 			if (ENABLE_PROFILER) PROFILER.endSection();  // "Core"
@@ -144,7 +144,7 @@ public class WDLEvents {
 
 		// NOTE: https://bugs.mojang.com/browse/MC-79925 was fixed in 1.14, but when backporting
 		// will possibly cause issues.
-		RayTraceResult result = WDL.minecraft.objectMouseOver;
+		RayTraceResult result = wdl.minecraft.objectMouseOver;
 		if (result.getType() == RayTraceResult.Type.MISS) {
 			return;
 		}

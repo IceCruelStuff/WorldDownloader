@@ -3,7 +3,7 @@
  * https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/2520465-world-downloader-mod-create-backups-of-your-builds
  *
  * Copyright (c) 2014 nairol, cubic72
- * Copyright (c) 2017-2019 Pokechu22, julialy
+ * Copyright (c) 2017-2020 Pokechu22, julialy
  *
  * This project is licensed under the MMPLv2.  The full text of the MMPL can be
  * found in LICENSE.md, or online at https://github.com/iopleke/MMPLv2/blob/master/LICENSE.md
@@ -123,11 +123,17 @@ public class WDL {
 	/**
 	 * Instance of WDL, currently a singleton but this will change in the future.
 	 */
-	public static final WDL INSTANCE = new WDL();
+	private static final WDL INSTANCE = new WDL();
+	/**
+	 * Returns the active instance of WDL.
+	 */
+	public static WDL getInstance() {
+		return INSTANCE;
+	}
 	/**
 	 * Reference to the Minecraft object.
 	 */
-	public static Minecraft minecraft;
+	public Minecraft minecraft = Minecraft.getInstance();
 	/**
 	 * Reference to the World object that WDL uses.
 	 */
@@ -269,14 +275,13 @@ public class WDL {
 
 	// Initialization:
 	static {
-		minecraft = Minecraft.getInstance();
 		// Initialize the Properties template:
 		defaultProps = new DefaultConfiguration();
 
 		globalProps = new Configuration(defaultProps);
 
 		try {
-			File dataFile = new File(minecraft.gameDir, "WorldDownloader.txt");
+			File dataFile = new File(Minecraft.getInstance().gameDir, "WorldDownloader.txt");
 			globalProps.load(dataFile);
 		} catch (FileNotFoundException e) {
 			LOGGER.debug("Failed to load global properties as they do not exist", e);
@@ -408,7 +413,7 @@ public class WDL {
 
 		runSanityCheck();
 
-		WDL.minecraft.displayGuiScreen(null);
+		minecraft.displayGuiScreen(null);
 
 		chunkLoader = WDLChunkLoader.create(this, saveHandler, worldClient.dimension);
 		newTileEntities.values().forEach((m) -> {
@@ -479,7 +484,7 @@ public class WDL {
 		Thread thread = new Thread(() -> {
 			try {
 				saveEverything();
-				WDL.minecraft.enqueue(() -> {
+				minecraft.enqueue(() -> {
 					WDL.saving = false;
 					onSaveComplete();
 				});
@@ -1098,7 +1103,7 @@ public class WDL {
 	 * Saves the global properties, which are used for all servers.
 	 */
 	public static void saveGlobalProps() {
-		File globalPropsFile = new File(minecraft.gameDir, "WorldDownloader.txt");
+		File globalPropsFile = new File(Minecraft.getInstance().gameDir, "WorldDownloader.txt");
 		try {
 			globalProps.store(globalPropsFile, I18n.format("wdl.props.global.title"));
 		} catch (Exception e) {
@@ -1737,6 +1742,6 @@ public class WDL {
 		} else {
 			report = CrashReport.makeCrashReport(t, category);
 		}
-		minecraft.crashed(report);
+		Minecraft.getInstance().crashed(report);
 	}
 }
