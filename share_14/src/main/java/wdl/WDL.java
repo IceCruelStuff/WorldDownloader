@@ -150,14 +150,16 @@ public class WDL {
 	 */
 	public Container windowContainer;
 	/**
-	 * The block position clicked most recently.
+	 * The block position clicked at the time of the most recent window opening.
 	 *
-	 * Needed for TileEntity creation.
+	 * Needed for block entity creation.
 	 */
+	@Nullable
 	public BlockPos lastClickedBlock;
 	/**
-	 * Last entity clicked (used for non-block tiles like minecarts with chests)
+	 * Last entity clicked (used for non-block containers like minecarts with chests).
 	 */
+	@Nullable
 	public Entity lastEntity;
 
 	/**
@@ -283,7 +285,6 @@ public class WDL {
 			throw new AssertionError("Minecraft instance is null at WDL bootstrap!");
 		}
 		if (INSTANCE == null) {
-			LOGGER.info("WDL bootstrap", new Exception("Call stack"));
 			INSTANCE = new WDL(Minecraft.getInstance());
 		}
 	}
@@ -1165,6 +1166,10 @@ public class WDL {
 		// Helps ensure they don't fall out of the world.
 		if (playerNBT.getCompound("abilities").getBoolean("mayfly")) {
 			playerNBT.getCompound("abilities").putBoolean("flying", true);
+		}
+
+		if (serverProps.getValue(MiscSettings.FORCE_DIMENSION_TO_OVERWORLD)) {
+			playerNBT.putInt("Dimension", 0);
 		}
 	}
 
