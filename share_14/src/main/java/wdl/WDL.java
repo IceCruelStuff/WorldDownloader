@@ -424,7 +424,7 @@ public class WDL {
 
 		saveHandler = VersionedFunctions.getSaveHandler(minecraft, getWorldFolderName(worldName));
 
-		runSanityCheck();
+		runSanityCheck(false);
 
 		minecraft.displayGuiScreen(null);
 
@@ -502,7 +502,7 @@ public class WDL {
 		Thread thread = new Thread(() -> {
 			try {
 				saveEverything();
-				minecraft.enqueue(() -> {
+				minecraft.execute(() -> {
 					WDL.saving = false;
 					onSaveComplete();
 				});
@@ -659,7 +659,12 @@ public class WDL {
 			progressScreen.startMajorTask(
 					I18n.format("wdl.saveProgress.flushingIO.title"), 1);
 			progressScreen.setMinorTaskProgress(() -> {
-				return I18n.format("wdl.saveProgress.flushingIO.subtitle", chunkLoader.getNumPendingChunks());
+				WDLChunkLoader chunkLoader = WDL.this.chunkLoader;
+				if (chunkLoader != null) {
+					return I18n.format("wdl.saveProgress.flushingIO.subtitle", chunkLoader.getNumPendingChunks());
+				} else {
+					return "";
+				}
 			}, 1);
 
 			// XXX Still needed?
@@ -1558,8 +1563,10 @@ public class WDL {
 	 * the user is warned in chat.
 	 *
 	 * @see SanityCheck
+	 * @param stopOnError True if checking should stop on the first error.
+	 * @return false if any sanity checks failed; true otherwise.
 	 */
-	private void runSanityCheck() {
+	public boolean runSanityCheck(boolean stopOnError) {
 		Map<SanityCheck, Exception> failures = Maps.newEnumMap(SanityCheck.class);
 
 		for (SanityCheck check : SanityCheck.values()) {
@@ -1573,6 +1580,9 @@ public class WDL {
 			} catch (Exception ex) {
 				LOGGER.trace("{} failed", check, ex);
 				failures.put(check, ex);
+				if (stopOnError) {
+					break;
+				}
 			}
 		}
 		if (!failures.isEmpty()) {
@@ -1589,7 +1599,9 @@ public class WDL {
 				}
 				WDLMessages.chatMessage(WDL.serverProps, WDLMessageTypes.ERROR, "Please check the log for more info.");
 			}
+			return false;
 		}
+		return true;
 	}
 
 	/**
